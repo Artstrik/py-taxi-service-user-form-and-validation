@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>
+    {% if is_driver_assigned %}
+      Remove from Car
+    {% else %}
+      Assign to Car
+    {% endif %}
+  </h1>
+
+  <div class="alert alert-info">
+    <p>Car: <strong>{{ car.model }} ({{ car.manufacturer.name }})</strong></p>
+    <p>Your action:
+      <strong>
+        {% if is_driver_assigned %}
+          Remove yourself from this car
+        {% else %}
+          Assign yourself to this car
+        {% endif %}
+      </strong>
+    </p>
+  </div>
+
+  <form action="" method="post">
+    {% csrf_token %}
+
+    <button type="submit" class="btn {% if is_driver_assigned %}btn-warning{% else %}btn-success{% endif %}">
+      {% if is_driver_assigned %}
+        ✅ Yes, remove me from this car
+      {% else %}
+        ✅ Yes, assign me to this car
+      {% endif %}
+    </button>
+
+    <a href="{% url 'taxi:car-detail' pk=car.id %}" class="btn btn-secondary">
+      Cancel
+    </a>
+  </form>
+{% endblock %}

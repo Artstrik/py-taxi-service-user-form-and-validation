@@ -2,25 +2,36 @@
 
 {% block content %}
   <h1>
-    Username: {{ driver.username }}
+    Driver: {{ driver.username }}
+    {% if user == driver or user.is_superuser %}
+      <a href="{% url 'taxi:driver-update-license' pk=driver.id %}" class="btn btn-warning link-to-page">
+        Update License
+      </a>
+      {% if user != driver and user.is_superuser %}
+        <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger link-to-page">
+          Delete Driver
+        </a>
+      {% endif %}
+    {% endif %}
   </h1>
 
   <p><strong>First name:</strong> {{ driver.first_name }}</p>
   <p><strong>Last name:</strong> {{ driver.last_name }}</p>
   <p><strong>License number:</strong> {{ driver.license_number }}</p>
+  <p><strong>Email:</strong> {{ driver.email }}</p>
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
 
   <div class="ml-3">
-    <h4>Cars</h4>
+    <h4>Assigned Cars</h4>
 
     {% for car in driver.cars.all %}
         <hr>
-        <p><strong>Model:</strong> {{ car.model }}</p>
+        <p><strong>Model:</strong>
+          <a href="{% url 'taxi:car-detail' pk=car.id %}">{{ car.model }}</a>
+        </p>
         <p><strong>Manufacturer:</strong> {{ car.manufacturer.name }}</p>
-        <p class="text-muted"><strong>Id:</strong> {{car.id}}</p>
-
     {% empty %}
-      <p>No cars!</p>
+      <p>No cars assigned!</p>
     {% endfor %}
   </div>
 {% endblock %}
