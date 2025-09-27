@@ -3,15 +3,13 @@
 {% block content %}
   <h1>
     Driver: {{ driver.username }}
-    {% if user == driver or user.is_superuser %}
-      <a href="{% url 'taxi:driver-update-license' pk=driver.id %}" class="btn btn-warning link-to-page">
-        Update License
+    {% if user == driver %}
+      <a href="{% url 'taxi:driver-license-update' pk=driver.id %}" class="btn btn-secondary">
+        Update license
       </a>
-      {% if user != driver and user.is_superuser %}
-        <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger link-to-page">
-          Delete Driver
-        </a>
-      {% endif %}
+      <a href="{% url 'taxi:driver-delete' pk=driver.id %}" class="btn btn-danger">
+        Delete driver
+      </a>
     {% endif %}
   </h1>
 
@@ -22,7 +20,7 @@
   <p><strong>Is staff:</strong> {{ driver.is_staff }}</p>
 
   <div class="ml-3">
-    <h4>Assigned Cars</h4>
+    <h4>Cars</h4>
 
     {% for car in driver.cars.all %}
         <hr>
